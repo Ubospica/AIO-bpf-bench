@@ -1,0 +1,22 @@
+{
+	"files.associations": {
+		"unistd.h": "c",
+		"array": "c",
+		"string_view": "c",
+		"initializer_list": "c",
+		"utility": "c",
+		"liburing.h": "c",
+		"time.h": "c",
+		"string.h": "c",
+		"stdio.h": "c",
+		"sdt.h": "c",
+		"types.h": "c",
+		"stat.h": "c",
+		"assert.h": "c",
+		"fcntl.h": "c",
+		"ioctl.h": "c",
+		"errno-base.h": "c",
+		"pthread.h": "c"
+	},
+	"C_Cpp.errorSquiggles": "Disabled"
+}

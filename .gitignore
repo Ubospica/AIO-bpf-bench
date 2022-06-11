@@ -1,0 +1,9 @@
+
+*
+!*.c
+!*.py
+!*.md
+!Makefile
+!.gitignore
+!.vscode
+!.vscode/*
