@@ -46,6 +46,14 @@ int my_min(int a, int b) {
 	if (is_read) DTRACE_PROBE(my-probe, probe-read); \
 	else DTRACE_PROBE(my-probe, probe-write);}
 
+double time_delta(struct timeval tv1, struct timeval tv2) {
+	return (tv2.tv_sec - tv1.tv_sec) * 1000.0 + (tv2.tv_usec - tv1.tv_usec) / 1000.0;
+}
+
+#define START_LATENCY() struct timeval t1, t2; gettimeofday(&t1, NULL);
+#define END_LATENCY() (gettimeofday(&t2, NULL), time_delta(t1, t2))
+
+
 int check(char *buf, int size) {
 	for (int i = 0; i < size; ++i) {
 		if (buf[i] != 'a') {
@@ -82,6 +90,8 @@ void io_uring_test(int fd, int size, char *buf, int is_read) {
 	
 	ADD_WR_PROBE();
 
+	START_LATENCY();
+
 	struct io_uring ring;
 	struct io_uring_sqe *sqe;
 	struct io_uring_cqe *cqe;
@@ -116,6 +126,7 @@ void io_uring_test(int fd, int size, char *buf, int is_read) {
 		}
 
 		int got_comp = 0;
+		usleep(1000);
 		while (cnt) {
 			if (!got_comp) {
 				ret = io_uring_wait_cqe(&ring, &cqe);
@@ -139,6 +150,9 @@ void io_uring_test(int fd, int size, char *buf, int is_read) {
 	io_uring_queue_exit(&ring);
 
 	ADD_WR_PROBE();
+	
+	// double lat = END_LATENCY();
+	// printf("time:%lf\n", lat);
 }
 
 void posix_aio_test(int fd, int size, char *buf, int is_read) {
@@ -308,7 +322,7 @@ int main(int argc, char *argv[]) {
 	close(infd);
 	close(outfd);
 
-	system("grep ctxt /proc/$(pidof pressure)/status | awk \'{ print $2 }\'");
+	// system("grep ctxt /proc/$(pidof pressure)/status | awk \'{ print $2 }\'");
 
     return 0;
 }

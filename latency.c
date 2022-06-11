@@ -350,7 +350,7 @@ int main(int argc, char *argv[]) {
 
     assert(argc == 6);
     int infd = open(argv[2], O_RDONLY | O_DIRECT);
-    int outfd = open(argv[3], O_RDWR | O_DIRECT);
+    int outfd = open(argv[3], O_WRONLY | O_CREAT | O_TRUNC | O_DIRECT, 0644);
     assert(infd >= 0 && outfd >= 0);
 
     struct stat st;

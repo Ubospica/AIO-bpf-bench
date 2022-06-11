@@ -21,8 +21,8 @@ def test(ty, sz, QD, blk_size):
 	# test
 	os.system("./%s %s %s %s %d %d" % (exec_name, ty, infile, outfile, QD, blk_size))
 
-	print("read time(s):", *[v.value / 1e9 for k, v in bpf["time_read"].items()])
-	print("write time(s):", *[v.value / 1e9 for k, v in bpf["time_write"].items()])
+	print("read time(s):", *[int(sz[:-1]) * 1e9 / v.value / 1024 for k, v in bpf["time_read"].items()])
+	print("write time(s):", *[int(sz[:-1]) * 1e9 / v.value / 1024 for k, v in bpf["time_write"].items()])
 
 
 
@@ -36,7 +36,7 @@ if __name__ == '__main__':
 			for QD, blk in QD_blk_list:
 				print("ty=%s sz=%s QD=%d blk=%d" % (ty, sz, QD, blk))
 				test(ty, sz, QD, blk)
-	# test("posix_aio", "32M", 64, 32)
+	# test("io_uring", "32M", 64, 32)
 
 
 

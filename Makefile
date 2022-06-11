@@ -37,9 +37,11 @@ bench: test.py gen
 	./io_uring a.txt a.new.txt &
 
 compile:
-	gcc generator.c -o generator -Wall -O2
-	gcc pressure.c -Wall -O2 -o pressure -luring -laio
-	gcc iops.c -Wall -O2 -o iops -luring -laio -pedantic
+	gcc generator.c -o generator -Wall -g3
+compile_pressure:
+	gcc pressure.c -Wall -g3 -o pressure -luring -laio
+compile_iops:
+	gcc iops.c -Wall -g3 -o iops -luring -laio -pedantic
 
 compile_gdb:
 	gcc generator.c -o generator -Wall -g3
